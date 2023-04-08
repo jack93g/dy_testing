@@ -162,3 +162,51 @@ const deliveryDate = date_range(2, 3);
 
 const deliveryDateElement = document.getElementById("delivery-date");
 deliveryDateElement.innerText = deliveryDate;
+
+
+//////////////////////////////////
+// Copyright LDN
+
+const holidays = ['09.04.2023', '10.04.2023', '12.04.2023'];
+const dayInMillisencods = 86400000;
+
+function stringifyDate(date) {
+  return new Date(date).toLocaleDateString('de-DE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
+
+function date_range(numberOfDaysToAddShort, numberOfDaysToAddLong) {
+  const lowerBoundDate = new Date();
+  const upperBoundDate = new Date();
+
+  const lowerBound = lowerBoundDate.setDate(
+    lowerBoundDate.getDate() + numberOfDaysToAddShort,
+  );
+  const upperBound = upperBoundDate.setDate(
+    upperBoundDate.getDate() + numberOfDaysToAddLong,
+  );
+
+  // const currentLowerDay = new Date(lowerBound).getDay();
+  // const currentUpperDay = new Date(upperBound).getDay();
+
+  const lowerBoundFormatted = stringifyDate(lowerBound);
+  const upperBoundFormatted = stringifyDate(upperBound);
+
+  if (holidays.includes(lowerBoundFormatted)) {
+    return date_range(numberOfDaysToAddShort + 1, numberOfDaysToAddLong + 1);
+  }
+
+  if (holidays.includes(upperBoundFormatted)) {
+    return date_range(numberOfDaysToAddShort, numberOfDaysToAddLong + 1);
+  }
+
+  // const lowerBoundFormatted = new Date(lowerBound).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  // const upperBoundFormatted = new Date(upperBound).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+
+  return "Lieferung voraussichtlich zwischen  " + lowerBoundFormatted + " und " + upperBoundFormatted;
+}
+
+console.log(date_range(2, 3))
